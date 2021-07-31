@@ -1,0 +1,95 @@
+function App (){
+  const [notes,setNotes]=React.useState([]);
+  
+ function addNotes(n)
+  {
+    setNotes(preNote=>{
+      return [...preNote,n];
+    });
+  } 
+  
+  function deleteNotes(id)
+  {
+   setNotes(prevNotes => {
+      return prevNotes.filter((noteItem, index) => {
+        return index !== id;
+      });
+    }); 
+  }
+       
+    return <div>
+      <Header/>
+      <CreateArea onAdd={addNotes}/>
+      {notes.map((i,index) => {
+        return (
+          <Note key={index} id={index} title={i.title} content={i.content} onDelete={deleteNotes}/>
+        );
+      })}
+      <Footer/>
+    </div>
+
+}
+function CreateArea (props){
+  
+  const [note,setNote]=React.useState({
+    title:"",
+    content:""
+  });
+
+  function handleChange(e)
+  {
+    const {name,value}=e.target;
+    setNote((preVal) => {
+     return {
+        ...preVal, //adding pre value to the object
+      [name]:value //only Changing the value of name
+     };
+    });
+  }
+  
+  function addNote(e)
+  {
+    props.onAdd(note)
+    setNote({
+    title:"",
+    content:""
+    });
+    e.preventDefault();
+  }
+  
+    return <div>
+      <form>
+        <input name="title" onChange={handleChange} value={note.title} placeholder="Title" />
+        <textarea name="content" onChange={handleChange} value={note.content} placeholder="Take a note..." rows="3" />
+        <button onClick={addNote}>Add</button>
+      </form>
+    </div>
+  
+}
+class Header extends React.Component{
+  render()
+  {
+    return <header><h1>Keeper</h1></header>
+  }
+}
+
+function Note(props){
+  function handleClick()
+  {
+    props.onDelete(props.id)
+  }
+    return  <div className="note">
+      <h1>{props.title}</h1>
+      <p>{props.content}</p>
+      <button onClick={handleClick} >DELETE</button>
+    </div>
+  
+}
+class Footer extends React.Component{
+
+  render()
+  {
+    return <footer><p>copyright {new Date().getFullYear()}</p></footer>
+  }
+}
+ReactDOM.render(<App/>,document.getElementById('app'));
