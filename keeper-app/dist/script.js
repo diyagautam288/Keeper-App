@@ -1,17 +1,17 @@
 function App() {
-  const [notes, setNotes] = React.useState([]);
+  const [notes, setNotes] = React.useState([]);//array of note
 
   function addNotes(n)
   {
     setNotes(preNote => {
-      return [...preNote, n];
+      return [...preNote, n];//append n(new note) to the array
     });
   }
 
   function deleteNotes(id)
   {
     setNotes(prevNotes => {
-      return prevNotes.filter((noteItem, index) => {
+      return prevNotes.filter((noteItem, index) => {//filtering all those note in array of note where index is not equal to id
         return index !== id;
       });
     });
